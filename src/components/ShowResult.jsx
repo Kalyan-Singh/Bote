@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bote, abi_Bote } from "../new_deployments";
 import {
   Backdrop,
@@ -13,6 +13,7 @@ import { useContractRead } from "wagmi";
 function ShowResult({ pollID }) {
   const [parties, setparties] = useState("");
   const [votes, setvotes] = useState("");
+  const [final,setFinal]= useState([]);
   const {
     data: prs,
     isError,
@@ -34,34 +35,40 @@ function ShowResult({ pollID }) {
     args: [pollID],
     onSuccess: (data) => {
       console.log(data);
-      setvotes(data); 
+      setvotes(data);
     },
   });
-  let i_vts = vts.map((vt) => {
-    return parseInt(vt);
-  });
-  let final = [];
-  for (let i = 0; i < i_vts.length; i++) {
-    final.push(`${prs[i]} -> ${i_vts[i]}`);
-  }
-  if(final){
+
+  useEffect(() => {
+    if (vts && prs) {
+      let i_vts = vts.map((vt) => {
+        return parseInt(vt);
+      });
+      let final2=[];
+      for (let i = 0; i < i_vts.length; i++) {
+        final2.push(`${prs[i]} -> ${i_vts[i]}`);
+      }
+      setFinal(final2);
+      console.log("Final-",final2);
+    }
+  }, [vts, prs]);
+
+  if (final.length >0) {
     return (
       <Box mt="15%">
-      {final.map((j) => {
+        {final.map((j) => {
           return (
-            
-            <Typography display='flex' justifyContent='center'> 
-            {j}
+            <Typography display="flex" justifyContent="center">
+              {j}
             </Typography>
           );
         })}
-        </Box>
+      </Box>
     );
   }
-  return (
-    <div>
-    </div>
-  );
+  else{
+    return <div>Nothing yet</div>;
+  }
 }
 
 export default ShowResult;

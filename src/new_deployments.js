@@ -1,4 +1,5 @@
-export const Bote = "0x21C4691742621D7bA4aa184F94e5ddc9A51Fdb48";
+// export const Bote = "0x21C4691742621D7bA4aa184F94e5ddc9A51Fdb48";
+export const Bote= "0xF2486FAdda60375766EeAD3A40925aAa1D928d7d";
 export const abi_Bote = [
   {
     anonymous: false,
